@@ -1,17 +1,18 @@
 {
   "id": "orientus",
   "name": "Advanced Navigation Orientus Driver",
-  "description": "ROS 2 BlueOS extension to publish IMU/orientation from the Advanced Navigation Orientus.",
+  "description": "ROS 2 driver for the Advanced Navigation Orientus IMU/INS integrated with BlueOS.",
   "version": "0.1.0",
-  "image": "christian99999/orientus-blueos:latest",
-  "architecture": ["arm64", "amd64"],
-  "services": [
+  "tags": ["ros2", "imu", "navigation"],
+  "containers": [
     {
       "name": "orientus",
-      "image": "christian99999/orientus-blueos:latest",
+      "image": "docker.io/christian99999/orientus-blueos:latest",
       "privileged": true,
-      "network_mode": "host",
-      "devices": ["/dev/serial/by-id/usb-FTDI_*:/dev/serial/by-id/usb-FTDI_*"],
+      "network": "host",
+      "devices": [
+        "/dev/serial/by-id/usb-FTDI_*:/dev/serial/by-id/usb-FTDI_*"
+      ],
       "environment": {
         "ROS_DOMAIN_ID": "30",
         "FASTDDS_TRANSPORT_SHM_DISABLED": "1",
@@ -19,10 +20,20 @@
         "PORT": "/dev/serial/by-id/usb-FTDI_*",
         "BAG": "0"
       },
-      "volumes": ["/data/logs:/data/logs"],
-      "webui": { "port": 8080, "path": "/" }
+      "volumes": [
+        "/data/logs:/data/logs"
+      ],
+      "web_ui": {
+        "port": 8080,
+        "path": "/"
+      },
+      "restart": "always"
     }
   ],
+  "compatibility": {
+    "blueos": ">=1.0.0"
+  },
   "maintainer": "Christian Ceravolo <christian_ceravolo@hotmail.com>",
   "license": "MIT"
 }
+
